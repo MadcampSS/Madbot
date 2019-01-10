@@ -60,6 +60,7 @@ public class FaceDetectionActivity extends AppCompatActivity {
                     .setPerformanceMode(FirebaseVisionFaceDetectorOptions.ACCURATE)
                     .setLandmarkMode(FirebaseVisionFaceDetectorOptions.ALL_LANDMARKS)
                     .setClassificationMode(FirebaseVisionFaceDetectorOptions.ALL_CLASSIFICATIONS)
+                    .enableTracking()
                     .build();
 
     // Real-time contour detection of multiple faces
