@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "460502869550",
+    "firebase_url": "https://madcamp-1546572220179.firebaseio.com",
+    "project_id": "madcamp-1546572220179",
+    "storage_bucket": "madcamp-1546572220179.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:460502869550:android:a1d89c688529238e",
+        "android_client_info": {
+          "package_name": "com.example.voicerecognition"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "460502869550-7gi8ldkojqh1n0fv9r7deb20pc84v3fq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.voicerecognition",
+            "certificate_hash": "ed45310b31fd2e38636ba8fd423a6707ed4b2bd6"
+          }
+        },
+        {
+          "client_id": "460502869550-dvhnmqjf8pugcelred68e9jmleiesa6d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-DD62Qb7XSivH3dftrCTGMFvew9IVBQQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "460502869550-dvhnmqjf8pugcelred68e9jmleiesa6d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
