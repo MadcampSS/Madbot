@@ -57,6 +57,7 @@ public class ChatBot {
                 if (aiResponse != null) {
                     // process aiResponse here
                     String speech = aiResponse.getResult().getFulfillment().getSpeech();
+                    MainActivity.chatArrayAdapter.add("매드봇: " + speech);
                     Log.i(TAG, speech);
                     tts.speak(speech);
                 }

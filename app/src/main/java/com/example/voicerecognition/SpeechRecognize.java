@@ -56,6 +56,7 @@ public class SpeechRecognize implements RecognitionListener {
         if (matches != null) {
             resultOne = matches.get(0);
             Log.e(TAG, "onResults text: " + resultOne);
+            MainActivity.chatArrayAdapter.add("나:  " + resultOne);
             chatBot.setQuery(resultOne).requestTask();
             eporConnection.textToCommand(resultOne);
         }
