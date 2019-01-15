@@ -26,10 +26,24 @@
     <TextView
         android:id="@+id/textView"
         android:layout_width="0dp"
-        android:layout_height="300dp"
+        android:layout_height="200dp"
         android:layout_marginStart="5dp"
         android:layout_marginEnd="5dp"
-        android:scrollbars = "vertical"
+        android:layout_marginBottom="8dp"
+        android:scrollbars="vertical"
+        android:background="@drawable/faceback"
+        app:layout_constraintBottom_toTopOf="@+id/labelView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/labelView"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:scrollbars="vertical"
+        android:background="@drawable/labelback"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

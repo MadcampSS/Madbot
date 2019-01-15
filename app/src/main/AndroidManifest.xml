@@ -32,7 +32,7 @@
 
         <meta-data
             android:name="com.google.firebase.ml.vision.DEPENDENCIES"
-            android:value="face" />
+            android:value="face, label" />
         <!-- To use multiple models: android:value="face,model2,model3" -->
         <activity android:name=".FaceDetectionActivity" />
         <activity android:name=".PreviewActivity" />

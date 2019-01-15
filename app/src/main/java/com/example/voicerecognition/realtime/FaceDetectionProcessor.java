@@ -65,12 +65,13 @@ public class FaceDetectionProcessor extends VisionProcessorBase<List<FirebaseVis
             int cameraFacing =
                     frameMetadata != null ? frameMetadata.getCameraFacing() :
                             Camera.CameraInfo.CAMERA_FACING_BACK;
-            FaceGraphic faceGraphic = new FaceGraphic(graphicOverlay, face, cameraFacing);
-            graphicOverlay.add(faceGraphic);
 
             if(face.getSmilingProbability() > 0.90f) {
                 ((PreviewActivity) mContext).takeScreenshot();
             }
+
+            FaceGraphic faceGraphic = new FaceGraphic(graphicOverlay, face, cameraFacing);
+            graphicOverlay.add(faceGraphic);
         }
         graphicOverlay.postInvalidate();
     }
