@@ -2,10 +2,12 @@ package com.example.voicerecognition;
 
 import android.Manifest;
 import android.app.Activity;
+import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.icu.text.StringPrepParseException;
 import android.media.FaceDetector;
 import android.net.Uri;
 import android.os.Build;
@@ -26,20 +28,16 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements RecognitionListener {
+public class MainActivity extends AppCompatActivity {
 
-    final int PERMISSION_READ_EXTERNAL_STORAGE = 111;
+    private static final int PERMISSION_READ_EXTERNAL_STORAGE = 111;
+    private static final int REQUEST_SELECT_DEVICE = 222;
 
-    ArrayList<String> imgPaths;
-    FaceDetectionActivity faceDetectionActivity;
-
-    GridView gridView;
-
-    private SpeechRecognizer speech;
-
-    private Intent recognizerIntent;
-    private final int RESULT_SPEECH = 1000;
-
+    private ArrayList<String> imgPaths;
+    private FaceDetectionActivity faceDetectionActivity;
+    private GridView gridView;
+    private SpeechRecognize speech;
+    private EporConnection eporConnection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,20 +47,21 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
         gridView = (GridView) findViewById(R.id.gridView);
         faceDetectionActivity = new FaceDetectionActivity();
 
-        checkPermission(this);
+        eporConnection = new EporConnection(this);
 
-        speech = SpeechRecognizer.createSpeechRecognizer(this);
-        speech.setRecognitionListener(this);
+        speech = new SpeechRecognize(this, eporConnection);
+
+        checkPermission(this);
 
         findViewById(R.id.floatingButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                recognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-                recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, "ko-KR"); //언어지정입니다.
-                recognizerIntent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, getPackageName());
-                recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_WEB_SEARCH);
-                recognizerIntent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 5);   //검색을 말한 결과를 보여주는 갯수
-                startActivityForResult(recognizerIntent, RESULT_SPEECH);
+                if (eporConnection.getConnectedTask() != null) {
+                    speech.startListen();
+                } else {
+                    Toast.makeText(MainActivity.this, "매드봇을 연결해주세요", Toast.LENGTH_SHORT).show();
+                }
+                // startActivityForResult(recognizerIntent, SpeechRecognize.RESULT_SPEECH);
             }
         });
 
@@ -71,6 +70,14 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
             public void onClick(View view) {
                 Intent i = new Intent(MainActivity.this, PreviewActivity.class);
                 startActivity(i);
+            }
+        });
+
+        findViewById(R.id.connectButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent selectDevice = new Intent(MainActivity.this, DeviceListActivity.class);
+                startActivityForResult(selectDevice, REQUEST_SELECT_DEVICE);
             }
         });
 
@@ -174,118 +181,24 @@ public class MainActivity extends AppCompatActivity implements RecognitionListen
         return imageList;
     }
 
-    @Override
-    public void onEndOfSpeech() {
 
-    }
-
-    @Override
-    public void onReadyForSpeech(Bundle bundle) {
-
-    }
-
-    @Override
-    public void onResults(Bundle results) {
-        ArrayList<String> matches = results
-                .getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-
-        for(int i = 0; i < matches.size() ; i++){
-            Log.e("GoogleActivity", "onResults text : " + matches.get(i));
+    private void consumeRequestDeviceSelect(int resultCode, Intent data) {
+        if (resultCode != RESULT_OK) {
+            return;
         }
-
+        BluetoothDevice device = data.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+        eporConnection.saveAsDefault(device);
+        eporConnection.onDeviceSelected(device);
     }
 
-    @Override
-    public void onError(int errorCode) {
-
-        String message;
-
-        switch (errorCode) {
-
-            case SpeechRecognizer.ERROR_AUDIO:
-                message = "오디오 에러";
-                break;
-
-            case SpeechRecognizer.ERROR_CLIENT:
-                message = "클라이언트 에러";
-                break;
-
-            case SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS:
-                message = "퍼미션없음";
-                break;
-
-            case SpeechRecognizer.ERROR_NETWORK:
-                message = "네트워크 에러";
-                break;
-
-            case SpeechRecognizer.ERROR_NETWORK_TIMEOUT:
-                message = "네트웍 타임아웃";
-                break;
-
-            case SpeechRecognizer.ERROR_NO_MATCH:
-                message = "찾을수 없음";;
-                break;
-
-            case SpeechRecognizer.ERROR_RECOGNIZER_BUSY:
-                message = "바쁘대";
-                break;
-
-            case SpeechRecognizer.ERROR_SERVER:
-                message = "서버이상";;
-                break;
-
-            case SpeechRecognizer.ERROR_SPEECH_TIMEOUT:
-                message = "말하는 시간초과";
-                break;
-
-            default:
-                message = "알수없음";
-                break;
-        }
-
-        Log.e("GoogleActivity", "SPEECH ERROR : " + message);
-    }
-
-    @Override
-    public void onRmsChanged(float v) {
-
-    }
-
-    @Override
-    public void onBeginningOfSpeech() {
-
-    }
-
-    @Override
-    public void onEvent(int i, Bundle bundle) {
-
-    }
-
-    @Override
-    public void onPartialResults(Bundle bundle) {
-
-    }
-
-    @Override
-    public void onBufferReceived(byte[] bytes) {
-
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         switch (requestCode) {
-            case RESULT_SPEECH : {
-                if (resultCode == RESULT_OK && null != data) {
-                    ArrayList<String> text = data
-                            .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-
-                    for(int i = 0; i < text.size() ; i++){
-                        Log.e("GoogleActivity", "onActivityResult text : " + text.get(i));
-                    }
-                }
-
+            case REQUEST_SELECT_DEVICE : {
+                consumeRequestDeviceSelect(resultCode, data);
                 break;
             }
         }
