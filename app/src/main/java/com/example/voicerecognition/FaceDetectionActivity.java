@@ -58,7 +58,7 @@ public class FaceDetectionActivity extends AppCompatActivity {
     FirebaseVisionFaceDetectorOptions highAccuracyOpts =
             new FirebaseVisionFaceDetectorOptions.Builder()
                     .setPerformanceMode(FirebaseVisionFaceDetectorOptions.ACCURATE)
-                    .setLandmarkMode(FirebaseVisionFaceDetectorOptions.ALL_LANDMARKS)
+                    // .setLandmarkMode(FirebaseVisionFaceDetectorOptions.ALL_LANDMARKS)
                     .setClassificationMode(FirebaseVisionFaceDetectorOptions.ALL_CLASSIFICATIONS)
                     .enableTracking()
                     .build();
@@ -111,7 +111,7 @@ public class FaceDetectionActivity extends AppCompatActivity {
             String faceAttribute = "Tracking ID: " + face.getTrackingId()
                     + "\n Left Eye Open: " + face.getLeftEyeOpenProbability()
                     + "\n Right Eye Open: " + face.getRightEyeOpenProbability()
-                    + "\n Smiling Probability: " + face.getSmilingProbability() + "\n";
+                    + "\n Smiling Probability: " + face.getSmilingProbability() + "\n\n";
 
             textView.append(faceAttribute);
 

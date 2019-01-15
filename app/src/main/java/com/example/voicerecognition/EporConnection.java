@@ -219,16 +219,6 @@ public class EporConnection implements RejectedExecutionHandler {
         }
     }
 
-    private BluetoothDevice loadDefault() {
-        SharedPreferences prefs = PreferenceManager
-                .getDefaultSharedPreferences(mContext);
-        String addr = prefs.getString(RECENT_DEVICE, null);
-        if (addr == null) {
-            return null;
-        }
-        BluetoothDevice device = mBluetooth.getRemoteDevice(addr);
-        return device;
-    }
     public void onDeviceSelected(BluetoothDevice device) {
         mLock.lock();
         try {
@@ -475,3 +465,16 @@ public class EporConnection implements RejectedExecutionHandler {
         }
     }
 }
+
+
+
+//    private BluetoothDevice loadDefault() {
+//        SharedPreferences prefs = PreferenceManager
+//                .getDefaultSharedPreferences(mContext);
+//        String addr = prefs.getString(RECENT_DEVICE, null);
+//        if (addr == null) {
+//            return null;
+//        }
+//        BluetoothDevice device = mBluetooth.getRemoteDevice(addr);
+//        return device;
+//    }

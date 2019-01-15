@@ -3,17 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.voicerecognition">
 
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
     <uses-feature android:name="android.hardware.camera" />
-    <uses-feature android:name="android.hardware.camera.autofocus"/>
+    <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <application
         android:allowBackup="true"
@@ -36,8 +35,12 @@
             android:value="face" />
         <!-- To use multiple models: android:value="face,model2,model3" -->
         <activity android:name=".FaceDetectionActivity" />
-        <activity android:name=".PreviewActivity"></activity>
-        <activity android:name=".DeviceListActivity" android:label="DeviceList"/>
+        <activity android:name=".PreviewActivity" />
+        <activity
+            android:name=".DeviceListActivity"
+            android:label="DeviceList" />
+        <activity android:name=".GalleryActivity" />
+        <activity android:name=".StreamActivity"></activity>
     </application>
 
 </manifest>
