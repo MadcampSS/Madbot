@@ -1,11 +1,10 @@
-package com.example.voicerecognition;
+package com.example.voicerecognition.epor;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -93,17 +92,17 @@ public class EporConnection implements RejectedExecutionHandler {
             CMDNOUN |= 0x04;
 
         // VERB
-        if(command.contains("멈춰") || command.contains("멈춤") || command.contains("정지"))
+        if(command.contains("멈춰") || command.contains("정지") || command.contains("스톱"))
             CMDVERB |= 0x0001;
-        if(command.contains("왼") || command.contains("좌측"))
+        if(command.contains("왼") || command.contains("좌측") || command.contains("좌회전"))
             CMDVERB |= 0x0002;
-        if(command.contains("오른") || command.contains("우측"))
+        if(command.contains("오른") || command.contains("우측") || command.contains("우회전"))
             CMDVERB |= 0x0004;
         if(command.contains("아래") || command.contains("밑"))
             CMDVERB |= 0x0008;
-        if(command.contains("뒤") || command.contains("후방"))
+        if(command.contains("뒤") || command.contains("후방") || command.contains("후진"))
             CMDVERB |= 0x0010;
-        if(command.contains("앞") || command.contains("전방"))
+        if(command.contains("앞") || command.contains("전방") || command.contains("전진"))
             CMDVERB |= 0x0020;
 
         // Translating

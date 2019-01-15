@@ -1,4 +1,4 @@
-package com.example.voicerecognition;
+package com.example.voicerecognition.realtime;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -6,14 +6,13 @@ import android.graphics.Paint;
 
 import com.google.firebase.ml.vision.common.FirebaseVisionPoint;
 import com.google.firebase.ml.vision.face.FirebaseVisionFace;
-import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetectorOptions;
 import com.google.firebase.ml.vision.face.FirebaseVisionFaceLandmark;
 
 public class FaceGraphic extends GraphicOverlay.Graphic {
     private static final float FACE_POSITION_RADIUS = 4.0f;
-    private static final float ID_TEXT_SIZE = 30.0f;
-    private static final float ID_Y_OFFSET = 50.0f;
-    private static final float ID_X_OFFSET = -50.0f;
+    private static final float ID_TEXT_SIZE = 40.0f;
+    private static final float ID_Y_OFFSET = 60.0f;
+    private static final float ID_X_OFFSET = -60.0f;
     private static final float BOX_STROKE_WIDTH = 5.0f;
 
     private int facing;
@@ -36,6 +35,7 @@ public class FaceGraphic extends GraphicOverlay.Graphic {
 
         idPaint = new Paint();
         idPaint.setColor(selectedColor);
+        idPaint.setTextSize(ID_TEXT_SIZE);
 
         boxPaint = new Paint();
         boxPaint.setColor(selectedColor);

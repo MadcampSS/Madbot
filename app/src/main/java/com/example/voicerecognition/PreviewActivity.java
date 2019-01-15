@@ -1,9 +1,14 @@
 package com.example.voicerecognition;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.hardware.Camera;
+import android.net.Uri;
+import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -11,11 +16,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
-import com.google.firebase.ml.common.FirebaseMLException;
+import com.example.voicerecognition.realtime.CameraSource;
+import com.example.voicerecognition.realtime.CameraSourcePreview;
+import com.example.voicerecognition.realtime.FaceDetectionProcessor;
+import com.example.voicerecognition.realtime.GraphicOverlay;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class PreviewActivity extends AppCompatActivity {
@@ -90,7 +107,7 @@ public class PreviewActivity extends AppCompatActivity {
 
         switch (model) {
             case FACE_DETECTION:
-                cameraSource.setMachineLearningFrameProcessor(new FaceDetectionProcessor());
+                cameraSource.setMachineLearningFrameProcessor(new FaceDetectionProcessor(this));
                 break;
             default:
                 Log.e(TAG, "Unknown model: " + model);
@@ -185,5 +202,75 @@ public class PreviewActivity extends AppCompatActivity {
         }
         Log.i(TAG, "Permission NOT granted: " + permission);
         return false;
+    }
+
+    private void notifyPhotoAdded(String photoPath) {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File f = new File(photoPath);
+        Uri contentUri = Uri.fromFile(f);
+        mediaScanIntent.setData(contentUri);
+        this.sendBroadcast(mediaScanIntent);
+    }
+
+    public void takeScreenshot() {
+        Date now = new Date();
+        android.text.format.DateFormat.format("yyyy-MM-dd_hh:mm:ss", now);
+
+        try {
+            // image naming and path  to include sd card  appending name you choose for file
+            final String mPath = Environment.getExternalStorageDirectory().toString() + "/DCIM/Camera/" + now + ".jpg";
+
+            preview.setDrawingCacheEnabled(true);
+            final Bitmap bitmap = Bitmap.createBitmap(preview.getDrawingCache());
+            preview.setDrawingCacheEnabled(false);
+
+            final File imageFile = new File(mPath);
+
+            if(ActivityCompat.checkSelfPermission(PreviewActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+                FileOutputStream outputStream = new FileOutputStream(imageFile);
+                int quality = 100;
+                bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
+                outputStream.flush();
+                outputStream.close();
+
+                Toast.makeText(PreviewActivity.this, "Captured @ " +  mPath, Toast.LENGTH_SHORT).show();
+                notifyPhotoAdded(mPath);
+            } else {
+                Dexter.withActivity(PreviewActivity.this)
+                        .withPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        .withListener(new MultiplePermissionsListener() {
+                            @Override
+                            public void onPermissionsChecked(MultiplePermissionsReport report) {
+                                if (report.areAllPermissionsGranted()) {
+                                    FileOutputStream outputStream = null;
+                                    try {
+                                        outputStream = new FileOutputStream(imageFile);
+                                        int quality = 100;
+                                        bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
+                                        outputStream.flush();
+                                        outputStream.close();
+
+                                        Toast.makeText(PreviewActivity.this, "Captured @ " +  mPath, Toast.LENGTH_SHORT).show();
+                                        notifyPhotoAdded(mPath);
+
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+
+                                } else if (report.isAnyPermissionPermanentlyDenied()) {
+                                    Toast.makeText(PreviewActivity.this, "PERMISSION DENIED", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+                                token.continuePermissionRequest();
+                            }
+                        }).check();
+            }
+        } catch (Throwable e) {
+            // Several error may come out with file handling or DOM
+            e.printStackTrace();
+        }
     }
 }

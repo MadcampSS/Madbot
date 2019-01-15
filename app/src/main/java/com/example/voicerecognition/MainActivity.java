@@ -1,38 +1,23 @@
 package com.example.voicerecognition;
 
-import android.Manifest;
-import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.icu.text.StringPrepParseException;
-import android.media.FaceDetector;
-import android.net.Uri;
-import android.os.Build;
-import android.provider.MediaStore;
-import android.speech.RecognitionListener;
-import android.speech.RecognizerIntent;
-import android.speech.SpeechRecognizer;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
+import com.example.voicerecognition.chatbot.SpeechRecognize;
+import com.example.voicerecognition.chatbot.ChatBot;
+import com.example.voicerecognition.epor.DeviceListActivity;
+import com.example.voicerecognition.epor.EporConnection;
 
 public class MainActivity extends AppCompatActivity {
 

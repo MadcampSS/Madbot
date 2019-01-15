@@ -1,9 +1,11 @@
-package com.example.voicerecognition;
+package com.example.voicerecognition.realtime;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.hardware.Camera;
 import android.util.Log;
 
+import com.example.voicerecognition.PreviewActivity;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
@@ -20,13 +22,17 @@ public class FaceDetectionProcessor extends VisionProcessorBase<List<FirebaseVis
 
     private final FirebaseVisionFaceDetector detector;
 
-    public FaceDetectionProcessor() {
+    private Context mContext;
+
+    public FaceDetectionProcessor(Context context) {
         FirebaseVisionFaceDetectorOptions options =
                 new FirebaseVisionFaceDetectorOptions.Builder()
                     .setClassificationMode(FirebaseVisionFaceDetectorOptions.ALL_CLASSIFICATIONS)
                         .build();
 
         detector = FirebaseVision.getInstance().getVisionFaceDetector(options);
+
+        mContext = context;
     }
 
     @Override
@@ -61,6 +67,10 @@ public class FaceDetectionProcessor extends VisionProcessorBase<List<FirebaseVis
                             Camera.CameraInfo.CAMERA_FACING_BACK;
             FaceGraphic faceGraphic = new FaceGraphic(graphicOverlay, face, cameraFacing);
             graphicOverlay.add(faceGraphic);
+
+            if(face.getSmilingProbability() > 0.90f) {
+                ((PreviewActivity) mContext).takeScreenshot();
+            }
         }
         graphicOverlay.postInvalidate();
     }

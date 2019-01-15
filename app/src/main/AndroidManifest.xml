@@ -37,7 +37,7 @@
         <activity android:name=".FaceDetectionActivity" />
         <activity android:name=".PreviewActivity" />
         <activity
-            android:name=".DeviceListActivity"
+            android:name=".epor.DeviceListActivity"
             android:label="DeviceList" />
         <activity android:name=".GalleryActivity" />
         <activity android:name=".StreamActivity"></activity>

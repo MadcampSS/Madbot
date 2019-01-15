@@ -1,4 +1,4 @@
-package com.example.voicerecognition;
+package com.example.voicerecognition.realtime;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,12 +8,10 @@ import android.hardware.Camera;
 import android.util.Log;
 import android.util.Size;
 import android.view.Surface;
-import android.view.SurfaceHolder;
 import android.view.WindowManager;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.security.Policy;
 import java.util.ArrayList;
 import java.util.IdentityHashMap;
 import java.util.List;
@@ -43,7 +41,7 @@ public class CameraSource {
     private Size previewSize;
 
 
-    private final float requestedFps = 60.0f;
+    private final float requestedFps = 30.0f;
     private final int requestedPreviewWidth = 480;
     private final int requestedPreviewHeight = 360;
     private final boolean requestedAutoFocus = true;

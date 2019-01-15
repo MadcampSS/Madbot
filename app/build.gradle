@@ -44,4 +44,5 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.6'
     implementation 'ai.api:sdk:2.0.7@aar'
     implementation 'ai.api:libai:1.6.12'
+    implementation 'com.karumi:dexter:5.0.0'
 }

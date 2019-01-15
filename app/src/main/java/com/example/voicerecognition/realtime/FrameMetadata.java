@@ -1,4 +1,4 @@
-package com.example.voicerecognition;
+package com.example.voicerecognition.realtime;
 
 public class FrameMetadata {
 

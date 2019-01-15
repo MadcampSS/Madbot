@@ -1,4 +1,4 @@
-package com.example.voicerecognition;
+package com.example.voicerecognition.chatbot;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,6 +7,9 @@ import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.util.Log;
+
+import com.example.voicerecognition.MainActivity;
+import com.example.voicerecognition.epor.EporConnection;
 
 import java.util.ArrayList;
 

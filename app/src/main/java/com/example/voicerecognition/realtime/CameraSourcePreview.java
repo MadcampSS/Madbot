@@ -1,8 +1,7 @@
-package com.example.voicerecognition;
+package com.example.voicerecognition.realtime;
 
 import android.content.Context;
 import android.content.res.Configuration;
-import android.graphics.Camera;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.Size;
@@ -11,7 +10,6 @@ import android.view.SurfaceView;
 import android.view.ViewGroup;
 
 import java.io.IOException;
-import java.util.jar.Attributes;
 
 public class CameraSourcePreview extends ViewGroup {
     private static final String TAG = "CameraSourcePreview";

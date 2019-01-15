@@ -1,4 +1,4 @@
-package com.example.voicerecognition;
+package com.example.voicerecognition.epor;
 
 import android.app.ListActivity;
 import android.bluetooth.BluetoothAdapter;
@@ -18,6 +18,8 @@ import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.example.voicerecognition.R;
 
 import java.util.Set;
 

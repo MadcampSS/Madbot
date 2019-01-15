@@ -1,4 +1,4 @@
-package com.example.voicerecognition;
+package com.example.voicerecognition.chatbot;
 
 import android.content.Context;
 import android.speech.tts.TextToSpeech;

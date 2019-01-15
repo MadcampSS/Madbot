@@ -1,9 +1,11 @@
-package com.example.voicerecognition;
+package com.example.voicerecognition.chatbot;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+
+import com.example.voicerecognition.MainActivity;
 
 import ai.api.AIDataService;
 import ai.api.AIServiceException;
