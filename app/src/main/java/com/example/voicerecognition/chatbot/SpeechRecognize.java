@@ -28,7 +28,7 @@ public class SpeechRecognize implements RecognitionListener {
         this.eporConnection = eporConnection;
         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(activity);
         speechRecognizer.setRecognitionListener(this);
-        chatBot = new ChatBot(activity.getApplicationContext());
+        chatBot = new ChatBot(activity.getApplicationContext(), eporConnection);
 
         recognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, "ko-KR"); //언어지정입니다.
@@ -61,7 +61,7 @@ public class SpeechRecognize implements RecognitionListener {
             Log.e(TAG, "onResults text: " + resultOne);
             MainActivity.chatArrayAdapter.add("나:  " + resultOne);
             chatBot.setQuery(resultOne).requestTask();
-            eporConnection.textToCommand(resultOne);
+//            eporConnection.textToCommand(resultOne);
         }
 
 

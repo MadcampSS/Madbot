@@ -4,14 +4,17 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.voicerecognition.MainActivity;
+import com.example.voicerecognition.epor.EporConnection;
 
 import ai.api.AIDataService;
 import ai.api.AIServiceException;
 import ai.api.android.AIConfiguration;
 import ai.api.model.AIRequest;
 import ai.api.model.AIResponse;
+import ai.api.model.Result;
 
 public class ChatBot {
 
@@ -21,8 +24,9 @@ public class ChatBot {
     private AIDataService aiDataService;
     private AIRequest aiRequest;
     private TTS tts;
+    private EporConnection eporConnection;
 
-    public ChatBot(Context context) {
+    public ChatBot(Context context, EporConnection eporConnection) {
         mContext = context;
 
         final AIConfiguration config = new AIConfiguration("8aa82b7886364fe998410f9aa4bd4b6b",
@@ -33,6 +37,8 @@ public class ChatBot {
         aiRequest = new AIRequest();
 
         tts = new TTS(context);
+
+        this.eporConnection = eporConnection;
 
     }
 
@@ -58,7 +64,14 @@ public class ChatBot {
             protected void onPostExecute(AIResponse aiResponse) {
                 if (aiResponse != null) {
                     // process aiResponse here
-                    String speech = aiResponse.getResult().getFulfillment().getSpeech();
+                    final Result result = aiResponse.getResult();
+                    String speech = result.getFulfillment().getSpeech();
+                    String intentName =  result.getMetadata().getIntentName();
+
+                    Toast.makeText(mContext, intentName, Toast.LENGTH_SHORT).show();
+
+                    eporConnection.sendCommand(intentName);
+
                     MainActivity.chatArrayAdapter.add("매드봇: " + speech);
                     Log.i(TAG, speech);
                     tts.speak(speech);

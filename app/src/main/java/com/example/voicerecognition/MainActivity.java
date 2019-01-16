@@ -42,8 +42,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        chatBot = new ChatBot(this);
         eporConnection = new EporConnection(this);
+        chatBot = new ChatBot(this, eporConnection);
+
 
         speech = new SpeechRecognize(this, eporConnection);
 
@@ -147,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void sendMessage(String message) {
         chatBot.setQuery(message).requestTask();
-        eporConnection.textToCommand(message);
+//        eporConnection.textToCommand(message);
         chatArrayAdapter.add("나:  " + message);
         editText.setText("");
     }

@@ -71,6 +71,163 @@ public class EporConnection implements RejectedExecutionHandler {
         mContext = context;
     }
 
+    public void sendCommand(String command) {
+        CMDNOUN = 0;
+        CMDVERB = 0;
+        CMDVALID = false;
+
+        // NOUN
+        if(command.contains("팔")) {
+            CMDNOUN |= 0x01;
+            CMDVALID = true;
+        }
+        if(command.contains("머리")) {
+            CMDNOUN |= 0x02;
+            CMDVALID = true;
+        }
+        if(command.contains("불")) {
+            CMDNOUN |= 0x04;
+            CMDVALID = true;
+        }
+        // VERB
+        if(command.contains("정지")) {
+            CMDVERB |= 0x0001;
+            CMDVALID = true;
+        }
+        if(command.contains("왼") || command.contains("좌회전")) {
+            CMDVERB |= 0x0002;
+            CMDVALID = true;
+        }
+        if(command.contains("오른") || command.contains("우회전")) {
+            CMDVERB |= 0x0004;
+            CMDVALID = true;
+        }
+        if(command.contains("밑")) {
+            CMDVERB |= 0x0008;
+            CMDVALID = true;
+        }
+        if(command.contains("뒤") || command.contains("후진")) {
+            CMDVERB |= 0x0010;
+            CMDVALID = true;
+        }
+        if(command.contains("앞") || command.contains("전진")) {
+            CMDVERB |= 0x0020;
+            CMDVALID = true;
+        }
+
+        // Translating
+
+        if ((CMDVERB & 0x0001) != 0) {
+            Log.d("CMDVERB", "Stop");
+            setMotorSpeed(0,0);
+            setServoAngle(ServoHead, ServoArm1, ServoArm2);
+            return;
+        }
+
+        if (CMDVALID) {
+            if (CMDNOUN == 0x01) {
+                if ((CMDVERB & 0x0002) != 0) {
+                    if ((CMDVERB & 0x0008) != 0) {
+                        Log.d("CMDVERB", "Left Arm Bottom");
+                        ServoArm2 = 90;
+                    }
+                    if ((CMDVERB & 0x0010) != 0) {
+                        Log.d("CMDVERB", "Left Arm Back");
+                        ServoArm2 = 170;
+                    }
+                    if ((CMDVERB & 0x0020) != 0) {
+                        Log.d("CMDVERB", "Left Arm Front");
+                        ServoArm2 = 10;
+                    }
+                }
+                else if ((CMDVERB & 0x0004) != 0) {
+                    if ((CMDVERB & 0x0008) != 0) {
+                        Log.d("CMDVERB", "Right Arm Bottom");
+                        ServoArm1 = 90;
+                    }
+                    if ((CMDVERB & 0x0010) != 0) {
+                        Log.d("CMDVERB", "Right Arm Back");
+                        ServoArm1 = 10;
+                    }
+                    if ((CMDVERB & 0x0020) != 0) {
+                        Log.d("CMDVERB", "Right Arm Front");
+                        ServoArm1 = 170;
+                    }
+                }
+                else {
+                    if ((CMDVERB & 0x0008) != 0) {
+                        Log.d("CMDVERB", "Both Arm Bottom");
+                        ServoArm1 = 90;
+                        ServoArm2 = 90;
+                    }
+                    if ((CMDVERB & 0x0010) != 0) {
+                        Log.d("CMDVERB", "Both Arm Back");
+                        ServoArm1 = 10;
+                        ServoArm2 = 170;
+                    }
+                    if ((CMDVERB & 0x0020) != 0) {
+                        Log.d("CMDVERB", "Both Arm Front");
+                        ServoArm1 = 170;
+                        ServoArm2 = 10;
+                    }
+                }
+                setServoAngle(ServoHead, ServoArm1, ServoArm2);
+            }
+            else if (CMDNOUN == 0x02) {
+                if ((CMDVERB & 0x0002) != 0) {
+                    Log.d("CMDVERB", "Head Left");
+                    ServoHead = 170;
+                }
+                if ((CMDVERB & 0x0004) != 0) {
+                    Log.d("CMDVERB", "Head Right");
+                    ServoHead = 10;
+                }
+                if ((CMDVERB & 0x0020) != 0) {
+                    Log.d("CMDVERB", "Head Front");
+                    ServoHead = 90;
+                }
+                setServoAngle(ServoHead, ServoArm1, ServoArm2);
+            }
+            else if (CMDNOUN == 0x04) {
+
+            }
+            else {
+                if (CMDVERB == 0x0002) {
+                    Log.d("CMDVERB", "Left");
+                    setMotorSpeed(170,-170);
+                }
+                if (CMDVERB == 0x0004) {
+                    Log.d("CMDVERB", "Right");
+                    setMotorSpeed(-170,170);
+                }
+                if (CMDVERB == 0x0010) {
+                    Log.d("CMDVERB", "Backward");
+                    setMotorSpeed(-170, -170);
+                }
+                if (CMDVERB == 0x0020) {
+                    Log.d("CMDVERB", "Forward");
+                    setMotorSpeed(170, 170);
+                }
+                if (CMDVERB == 0x0012) {
+                    Log.d("CMDVERB", "Backward Left");
+                    setMotorSpeed(-250, -170);
+                }
+                if (CMDVERB == 0x0014) {
+                    Log.d("CMDVERB", "Backward Right");
+                    setMotorSpeed(-170, -250);
+                }
+                if (CMDVERB == 0x0022) {
+                    Log.d("CMDVERB", "Forward Left");
+                    setMotorSpeed(250,170);
+                }
+                if (CMDVERB == 0x0024) {
+                    Log.d("CMDVERB", "Forward Right");
+                    setMotorSpeed(170,250);
+                }
+            }
+        }
+    }
+
     public void textToCommand(String text) {
 
         String command = text;
