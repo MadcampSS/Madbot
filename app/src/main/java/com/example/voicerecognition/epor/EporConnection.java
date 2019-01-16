@@ -175,12 +175,11 @@ public class EporConnection implements RejectedExecutionHandler {
             setMotorSpeed(0,0);
             setServoAngle(ServoHead, ServoArm1, ServoArm2);
             if(dancing) {
+                count = 0;
                 timer.cancel();
                 timer = null;
                 dancing = false;
             }
-
-
             return;
         }
 
@@ -289,7 +288,7 @@ public class EporConnection implements RejectedExecutionHandler {
                 Log.d("DEBUG", "Dancing?!");
                 dancing = true;
                 timer = new Timer();
-                timer.schedule(dance, 0, 1000);
+                timer.schedule(dance, 0, 2000);
 
             }
         }
