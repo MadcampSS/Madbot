@@ -13,6 +13,8 @@
 
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-feature android:name="android.hardware.camera.ar" />
+
 
     <application
         android:allowBackup="true"
@@ -29,7 +31,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <meta-data android:name="com.google.ar.core" android:value="required" />
         <meta-data
             android:name="com.google.firebase.ml.vision.DEPENDENCIES"
             android:value="face, label" />
@@ -40,7 +42,8 @@
             android:name=".epor.DeviceListActivity"
             android:label="DeviceList" />
         <activity android:name=".GalleryActivity" />
-        <activity android:name=".StreamActivity"></activity>
+        <activity android:name=".StreamActivity" />
+        <activity android:name=".ArActivity"></activity>
     </application>
 
 </manifest>

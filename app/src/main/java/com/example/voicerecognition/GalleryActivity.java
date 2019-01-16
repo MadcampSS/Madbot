@@ -13,6 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.Gallery;
 import android.widget.GridView;
 
 import java.util.ArrayList;
@@ -31,6 +33,14 @@ public class GalleryActivity extends AppCompatActivity {
         gridView = (GridView) findViewById(R.id.gridView);
 
         checkPermission(this);
+
+        findViewById(R.id.arButton).setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(GalleryActivity.this, ArActivity.class);
+                startActivity(i);
+            }
+        });
 
     }
 

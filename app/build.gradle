@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.ar.sceneform.plugin'
 
 android {
     compileSdkVersion 27
@@ -27,6 +28,10 @@ android {
             jcenter()
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -46,4 +51,21 @@ dependencies {
     implementation 'ai.api:sdk:2.0.7@aar'
     implementation 'ai.api:libai:1.6.12'
     implementation 'com.karumi:dexter:5.0.0'
+
+    // Provides ArFragment, and other Sceneform UX resources:
+    implementation 'com.google.ar:core:1.6.0'
+    implementation "com.google.ar.sceneform.ux:sceneform-ux:1.6.0"
+    // Alternatively, use ArSceneView without the UX dependency.
+    implementation 'com.google.ar.sceneform:core:1.6.0'
 }
+
+
+sceneform.asset('sampledata/models/andy.obj',
+        'default',
+        'sampledata/models/andy.sfa',
+        'src/main/assets/andy')
+
+sceneform.asset('sampledata/models/andy.obj',
+        'default',
+        'sampledata/models/andy.sfa',
+        'src/main/res/raw/andy')

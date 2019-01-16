@@ -13,4 +13,16 @@
         android:gravity="center"
         android:numColumns="4"
         android:stretchMode="columnWidth"/>
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/arButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="17dp"
+        android:src="@android:drawable/ic_menu_more"
+        app:backgroundTint="@color/common_google_signin_btn_text_dark_default"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 </android.support.constraint.ConstraintLayout>

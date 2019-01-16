@@ -14,6 +14,7 @@ import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetector;
 import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetectorOptions;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FaceDetectionProcessor extends VisionProcessorBase<List<FirebaseVisionFace>> {
@@ -59,6 +60,8 @@ public class FaceDetectionProcessor extends VisionProcessorBase<List<FirebaseVis
             CameraImageGraphic imageGraphic = new CameraImageGraphic(graphicOverlay, originalCameraImage);
             graphicOverlay.add(imageGraphic);
         }
+        ArrayList<FaceGraphic> faceGraphicArrayList = new ArrayList<>();
+
         for (int i = 0; i < faces.size(); i++) {
             FirebaseVisionFace face = faces.get(i);
 
@@ -71,8 +74,14 @@ public class FaceDetectionProcessor extends VisionProcessorBase<List<FirebaseVis
             }
 
             FaceGraphic faceGraphic = new FaceGraphic(graphicOverlay, face, cameraFacing);
-            graphicOverlay.add(faceGraphic);
+            faceGraphicArrayList.add(faceGraphic);
         }
+
+        for(FaceGraphic faceGraphic : faceGraphicArrayList) {
+            graphicOverlay.add(faceGraphic);
+
+        }
+        faceGraphicArrayList.clear();
         graphicOverlay.postInvalidate();
     }
 
