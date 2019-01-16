@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -66,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
 
         setupChat();
 
+        final MediaPlayer carBeep = MediaPlayer.create(this, R.raw.carbeep);
+
         findViewById(R.id.connectButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -77,8 +80,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.streamButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this, StreamActivity.class);
-                startActivity(i);
+                carBeep.start();
             }
         });
 
