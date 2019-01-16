@@ -14,10 +14,19 @@
         app:layout_constraintBottom_toTopOf="@+id/speechButton"
         app:layout_constraintTop_toTopOf="parent">
 
+        <ImageView
+            android:id="@+id/eporeye"
+            android:layout_width="236dp"
+            android:layout_height="172dp"
+            app:srcCompat="@drawable/epor"
+            tools:layout_editor_absoluteX="121dp"
+            tools:layout_editor_absoluteY="84dp"
+            android:layout_gravity="center"/>
+
         <ListView
             android:id="@+id/listView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="318dp"
             android:layout_weight="1"
             android:stackFromBottom="true"
             android:transcriptMode="alwaysScroll" />
