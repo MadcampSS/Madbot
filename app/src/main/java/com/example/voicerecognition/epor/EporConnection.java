@@ -162,6 +162,11 @@ public class EporConnection implements RejectedExecutionHandler {
             CMDVERB |= 0x0020;
             CMDVALID = true;
         }
+        if(command.contains("춤")) {
+            CMDVERB |= 0x0040;
+            CMDVALID = true;
+        }
+
 
         // Translating
 
@@ -169,6 +174,13 @@ public class EporConnection implements RejectedExecutionHandler {
             Log.d("CMDVERB", "Stop");
             setMotorSpeed(0,0);
             setServoAngle(ServoHead, ServoArm1, ServoArm2);
+            if(dancing) {
+                timer.cancel();
+                timer = null;
+                dancing = false;
+            }
+
+
             return;
         }
 
@@ -272,6 +284,13 @@ public class EporConnection implements RejectedExecutionHandler {
                     Log.d("CMDVERB", "Forward Right");
                     setMotorSpeed(170,250);
                 }
+            }
+            if(CMDVERB == 0x0040) {
+                Log.d("DEBUG", "Dancing?!");
+                dancing = true;
+                timer = new Timer();
+                timer.schedule(dance, 0, 1000);
+
             }
         }
     }
@@ -318,11 +337,6 @@ public class EporConnection implements RejectedExecutionHandler {
             Log.d("CMDVERB", "Stop");
             setMotorSpeed(0,0);
             setServoAngle(ServoHead, ServoArm1, ServoArm2);
-            if(dancing) {
-                timer.cancel();
-                timer = null;
-                dancing = false;
-            }
 
             return;
         }
@@ -429,13 +443,7 @@ public class EporConnection implements RejectedExecutionHandler {
                 }
             }
 
-            if(CMDVERB == 0x0040) {
-                Log.d("DEBUG", "Dancing?!");
-                dancing = true;
-                timer = new Timer();
-                timer.schedule(dance, 0, 1000);
 
-            }
         }
     }
 
