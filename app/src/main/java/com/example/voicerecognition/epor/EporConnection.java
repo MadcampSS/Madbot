@@ -6,9 +6,13 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.example.voicerecognition.MainActivity;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -562,7 +566,7 @@ public class EporConnection implements RejectedExecutionHandler {
         }
         void received(byte[] buffer, int offset, int count) {
             String str = new String(buffer, offset, count);
-            // serialPort_DataReceived(buffer, count);
+            ((MainActivity) mContext).serialPort_DataReceived(buffer, count);
         }
     }
     private final class ConnectTask implements Cancelable {
