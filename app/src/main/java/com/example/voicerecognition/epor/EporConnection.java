@@ -67,6 +67,7 @@ public class EporConnection implements RejectedExecutionHandler {
                     ServoArm2 = 170;
                     setMotorSpeed(170,-170);
                     setRGBLed(255, 0, 0);
+                    break;
 
                 case 1:
                     ServoHead = 10;
@@ -74,6 +75,7 @@ public class EporConnection implements RejectedExecutionHandler {
                     ServoArm2 = 10;
                     setMotorSpeed(-170,170);
                     setRGBLed(0, 255, 0);
+                    break;
 
                 case 2:
                     ServoHead = 90;
@@ -81,6 +83,7 @@ public class EporConnection implements RejectedExecutionHandler {
                     ServoArm2 = 10;
                     setMotorSpeed(-170, -170);
                     setRGBLed(0, 0, 255);
+                    break;
 
                 case 3:
                     ServoHead = 90;
@@ -88,6 +91,7 @@ public class EporConnection implements RejectedExecutionHandler {
                     ServoArm2 = 170;
                     setMotorSpeed(170, 170);
                     setRGBLed(255, 255, 255);
+                    break;
 
             }
             setServoAngle(ServoHead, ServoArm1, ServoArm2);
@@ -184,6 +188,12 @@ public class EporConnection implements RejectedExecutionHandler {
         }
 
         if (CMDVALID) {
+            if(dancing) {
+                count = 0;
+                timer.cancel();
+                timer = null;
+                dancing = false;
+            }
             if (CMDNOUN == 0x01) {
                 if ((CMDVERB & 0x0002) != 0) {
                     if ((CMDVERB & 0x0008) != 0) {
