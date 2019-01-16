@@ -6,8 +6,8 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import java.util.Timer;
+import java.util.TimerTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -37,6 +37,8 @@ public class EporConnection implements RejectedExecutionHandler {
     private int CMDVERB = 0x0000;
     private boolean CMDVALID = false;
 
+    private boolean dancing = false;
+
     // Controller variables
     private byte[] CMDbuffer = new byte[10];
     int RGBon_off_flag=0;
@@ -52,6 +54,48 @@ public class EporConnection implements RejectedExecutionHandler {
     private int ServoHead = 90;
     private int ServoArm1 = 90;
     private int ServoArm2 = 90;
+
+    private int count = 0;
+
+    TimerTask dance = new TimerTask() {
+        @Override
+        public void run() {
+            switch(count) {
+                case 0:
+                    ServoHead = 170;
+                    ServoArm1 = 170;
+                    ServoArm2 = 170;
+                    setMotorSpeed(170,-170);
+                    setRGBLed(255, 0, 0);
+
+                case 1:
+                    ServoHead = 10;
+                    ServoArm1 = 10;
+                    ServoArm2 = 10;
+                    setMotorSpeed(-170,170);
+                    setRGBLed(0, 255, 0);
+
+                case 2:
+                    ServoHead = 90;
+                    ServoArm1 = 170;
+                    ServoArm2 = 10;
+                    setMotorSpeed(-170, -170);
+                    setRGBLed(0, 0, 255);
+
+                case 3:
+                    ServoHead = 90;
+                    ServoArm1 = 10;
+                    ServoArm2 = 170;
+                    setMotorSpeed(170, 170);
+                    setRGBLed(255, 255, 255);
+
+            }
+            setServoAngle(ServoHead, ServoArm1, ServoArm2);
+            count++;
+            count %= 4;
+        }
+    };
+    Timer timer;
 
 
     private static final String RECENT_DEVICE = "recent_device";
@@ -265,6 +309,8 @@ public class EporConnection implements RejectedExecutionHandler {
             CMDVERB |= 0x0010;
         if(command.contains("앞") || command.contains("전방") || command.contains("전진"))
             CMDVERB |= 0x0020;
+        if(command.contains("춤"))
+            CMDVERB |= 0x0040;
 
         // Translating
 
@@ -272,6 +318,12 @@ public class EporConnection implements RejectedExecutionHandler {
             Log.d("CMDVERB", "Stop");
             setMotorSpeed(0,0);
             setServoAngle(ServoHead, ServoArm1, ServoArm2);
+            if(dancing) {
+                timer.cancel();
+                timer = null;
+                dancing = false;
+            }
+
             return;
         }
 
@@ -375,6 +427,14 @@ public class EporConnection implements RejectedExecutionHandler {
                     Log.d("CMDVERB", "Forward Right");
                     setMotorSpeed(170,250);
                 }
+            }
+
+            if(CMDVERB == 0x0040) {
+                Log.d("DEBUG", "Dancing?!");
+                dancing = true;
+                timer = new Timer();
+                timer.schedule(dance, 0, 1000);
+
             }
         }
     }
